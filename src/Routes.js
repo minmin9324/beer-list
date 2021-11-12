@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import Beerlist from "./Pages/Beerlist";
 import Home from "./Pages/Home";
-import { useHistory } from "react-router-dom";
 // import ReactGA from "react-ga";
 
 const Routes = () => {
