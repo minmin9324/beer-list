@@ -2,20 +2,21 @@ import React, { useEffect, useState } from "react";
 import MaterialTable from "material-table";
 import axios from "axios";
 import styled from "styled-components";
-import { getDefaultNormalizer } from "@testing-library/dom";
+import { useSelector, useDispatch } from "react-redux";
+import { changeIndex } from "../Modules/column";
 
 const Beerlist = () => {
+  const number = useSelector((state) => state.column);
+  const dispatch = useDispatch();
   useEffect(() => {
     getData();
   }, []);
   const [beer, setBeer] = useState([]);
-  const [index, setIndex] = useState({ 0: "name", 1: "tagline", 2: "abv" });
 
   const getData = () => {
     axios({ method: "GET", url: "https://api.punkapi.com/v2/beers" })
       .then((res) => {
         setBeer(res.data);
-        console.log(res);
       })
       .catch((error) => console.log(error));
   };
@@ -30,15 +31,12 @@ const Beerlist = () => {
     <div style={{ maxWidth: "100%" }}>
       <MaterialTable
         onColumnDragged={(a, b) => {
-          const changeIndex = { ...index };
-          changeIndex[a] = index[b];
-          changeIndex[b] = index[a];
-          setIndex(changeIndex);
+          dispatch(changeIndex([a, b]));
         }}
         columns={[
-          { title: index[0], field: index[0] },
-          { title: index[1], field: index[1] },
-          { title: index[2], field: index[2] },
+          { title: number[0], field: number[0] },
+          { title: number[1], field: number[1] },
+          { title: number[2], field: number[2] },
         ]}
         data={beerData}
         title="Demo Title"
